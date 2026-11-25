@@ -1,0 +1,23 @@
+name: Verify deprecated rule on Linux
+on:
+  push:
+    branches: [ci/verify-deprecated-rule]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    if: github.repository == 'Daytonrad/env-saaf'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: bdd806da4b9c0f90b088d38cff9130e0af4ea3b6
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm test
